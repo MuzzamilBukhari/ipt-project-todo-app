@@ -22,13 +22,15 @@ export default function SignUP() {
     e.preventDefault();
     console.log("sign up handler called")
 
-    if (!emailValidation(email)) {
-      setError("Please enter a valid email address!")
-      return
-    }
+    
 
     if (!name) {
       setError("Enter your name!!")
+      return
+    }
+
+    if (!emailValidation(email)) {
+      setError("Please enter a valid email address!")
       return
     }
 
