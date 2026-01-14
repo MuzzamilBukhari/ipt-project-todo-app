@@ -2,8 +2,9 @@ import React from 'react'
 import NavBar from '../../components/NavBar/NavBar';
 import { useState } from 'react';
 import emailValidation from '../../utils/emailRegex';
-import PasswordInput from '../../components/NavBar/input/PasswordInput';
+
 import { Link } from "react-router-dom";
+import PasswordInput from '../../components/input/PasswordInput';
 
 
 export default function SignUP() {
