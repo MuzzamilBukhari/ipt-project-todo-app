@@ -1,7 +1,12 @@
 import React from 'react'
+import NavBar from '../../components/NavBar/NavBar'
 
 export default function  () {
   return (
-    <div >THis is home component!! </div>
+    // <div >THis is home component!! </div>
+    <>
+    <NavBar/>
+    </>
+
   )
 }
