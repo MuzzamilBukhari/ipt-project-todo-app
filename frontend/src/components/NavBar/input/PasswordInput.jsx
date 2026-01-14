@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {FaRegEye, FaRegEyeSlash} from "React-icons/fa6"
+import {FaRegEye, FaRegEyeSlash} from "react-icons/fa6"
 
 export default function PasswordInput({ value, onChange, placeholder }) {
 
@@ -11,7 +11,7 @@ export default function PasswordInput({ value, onChange, placeholder }) {
 
     return (
         <div className='flex items-center bg-transparent border-[1.5px] border-slate-200 px-5 rounded mb-3 '>
-            <input placeholder='Enter your Password'
+            <input placeholder='Enter Password'
                 value={value}
                 onChange={onChange}
                 type={isShowPassword ? "text" : "password"}
@@ -20,12 +20,20 @@ export default function PasswordInput({ value, onChange, placeholder }) {
 
             />
 
-            <FaRegEye
+  {/* toggling of eye icon  */}
+            {isShowPassword ? <FaRegEye
 
               size={22}
               className="text-blue-600 cursor-pointer"
               onClick={toggleShowPassword}
+              /> : 
+              <FaRegEyeSlash
+              size={22}
+              className="text-blue-600 cursor-pointer"
+              onClick={toggleShowPassword}
               />
+              
+            }
 
 
         </div>
