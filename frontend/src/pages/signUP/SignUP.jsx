@@ -1,0 +1,113 @@
+import React from 'react'
+import NavBar from '../../components/NavBar/NavBar';
+import { useState } from 'react';
+import emailValidation from '../../utils/emailRegex';
+import PasswordInput from '../../components/NavBar/input/PasswordInput';
+import { Link } from "react-router-dom";
+
+
+export default function SignUP() {
+
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+
+
+
+
+  const signupHandler = async (e) => {
+
+    e.preventDefault();
+    console.log("sign up handler called")
+
+    
+
+    if (!name) {
+      setError("Enter your name!!")
+      return
+    }
+
+    if (!emailValidation(email)) {
+      setError("Please enter a valid email address!")
+      return
+    }
+
+    if (!password) {
+      setError("Enter your password!")
+      return
+    }
+
+    setError("")
+
+    //sign up api setting
+
+
+  }
+
+  return (
+    // <div>This is Sign up component vroo!!</div>
+    <>
+      <NavBar />
+
+      <div className='flex items-center justify-center mt-22 '>
+
+        <div className='w-96  rounded bg-white px-7 py-10 drop-shadow'>
+          <form onSubmit={signupHandler}>
+            <h4 className='text-2xl mb-7'>Sign UP</h4>
+
+
+            {/* name */}
+            <input type="text" placeholder='Enter your UserName!' className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
+
+              value={name}
+              onChange={(e) => { setName(e.target.value) }}
+            />
+
+            {/* email  */}
+            <input type="text" placeholder='Enter your Email!' className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
+
+              value={email}
+              onChange={(e) => { setEmail(e.target.value) }}
+            />
+
+
+            {/* PasswordInput  */}
+            <PasswordInput
+              value={password}
+              onChange={(e) => { setPassword(e.target.value) }}
+            />
+
+            {/* validation para ! */}
+            {error && <p className='text-red-500 text-[13px] pb-1 ml-[8px]'> {error}</p>}
+
+            <button type="submit" className='w-full text-sm border bg-blue-600 text-white p-2 rounded  hover:bg-blue-700 transition-all duration-300 cursor-pointer '
+              onClick={signupHandler}
+            >Create Account!</button>
+
+            <p className='text-sm text-center mt-4 whitespace-pre-wrap'> Already have an account?{"      "}
+              <Link to="/login" className="font-medium text-primary underline  text-blue-600 my-1 ">
+                Login!
+              </Link>
+            </p>
+
+          </form >
+
+        </div>
+      </div>
+
+
+
+
+    </>
+
+
+  )
+}
+
+
+
+
+
+
