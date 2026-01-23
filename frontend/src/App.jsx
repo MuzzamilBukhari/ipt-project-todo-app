@@ -1,14 +1,15 @@
-import Home from './pages/home/home'
+// import Home from './pages/home/home'
 
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUP from './pages/signUP/signUP';
 import Login from './pages/login/login';
 import Start from './pages/start/start';
+import Home from "./pages/home/Home";
 
 
 function App() {
-
+ 
   return (
 
   <Router>
