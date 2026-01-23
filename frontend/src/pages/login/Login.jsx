@@ -1,8 +1,9 @@
 import React, { use, useState } from 'react'
 import NavBar from '../../components/NavBar/NavBar'
 import { Link } from "react-router-dom";
-import PasswordInput from '../../components/NavBar/input/PasswordInput';
+
 import emailValidation from '../../utils/emailRegex';
+import PasswordInput from '../../components/input/PasswordInput';
 
 export default function Login() {
 
@@ -82,4 +83,6 @@ export default function Login() {
       </div>
     </>
   )
+
+  
 }
