@@ -9,7 +9,8 @@ import jwt from "jsonwebtoken";
 
 // Local imports
 import config from "./config.json" with { type: "json" };
-import { User } from "./user-model.js";
+import { User } from "./models/user-model.js";
+import { Note } from "./models/note-model.js";
 import { authenticateToken } from "./utilities.js";
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(cors({ origin: "*" }));
 
 
 mongoose.connect(config.connectionString).then(() => {
-    console.log("connected to mongodb successfully");
+    console.log("connected to mongodb successfully vro !!");
 }).catch((err) => {
     console.error("error connecting to mongodb: ", err);
 });
@@ -43,7 +44,6 @@ app.post("/create-account", async (req, res) => {
     try {
 
         const { username, email, password } = req.body;
-
 
 
         if (!username) {
@@ -87,6 +87,8 @@ app.post("/create-account", async (req, res) => {
     }
 });
 
+
+//login 
 app.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -124,10 +126,6 @@ app.post("/login", async (req, res) => {
 
     }
 
-
-
-
-
     catch (error) {
         return res.status(500).json({ error: true, message: "Internal Server Error" });
     }
@@ -136,8 +134,168 @@ app.post("/login", async (req, res) => {
 
 
 
+// Add notes 
+app.post("/add-note", authenticateToken, async (req, res) => {
+
+    try {
+        const { title, content, tags } = req.body;
+
+        const user = req.user;
+        console.log("user in add note route:", user.user._id);
+
+        if (!title) {
+            return res.status(400).json({ error: true, message: "Note title is required!" })
+        }
+        if (!content) {
+            return res.status(400).json({ error: true, message: "Note content is required!" })
+        }
+
+        console.log("helloo before new note created")
+
+        const newNote = new Note({
+            title,
+            content,
+            tags: tags || [],
+            userId: user.user._id
+        });
+
+        console.log("helloo after new note created")
+        console.log(newNote)
+
+        await newNote.save();
+
+        console.log("after saving new note")
+
+        return res.status(201).json({
+            error: false,
+            newNote,
+            message: "Note added successfully!"
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error bro!!" });
+    }
+});
+
+
+// edit note here! bro
+app.put("/edit-note/:nodeId", authenticateToken, async (req, res) => {
+    try {
+        const noteId = req.params.nodeId;
+        const { title, content, tags, isPinned } = req.body;
+        const { user } = req.user;
+        console.log(user)
+
+        if (!title && !content && !tags) {
+            return res.status(400).json({ error: true, message: "At least one field (title, content, tags) is required to update!" });
+        }
+
+        const note = await Note.findOne({ _id: noteId, userId: user._id });
+        console.log(note)
+
+        if (!note) {
+            return res.status(404).json({ error: true, message: "Note not found!" });
+        }
+
+        if (title) note.title = title;
+        if (content) note.content = content;
+        if (tags) note.tags = tags;
+        if (isPinned !== undefined) note.isPinned = isPinned;
+
+        await note.save();
+
+        return res.status(200).json({
+            error: false,
+            note,
+            message: "Note updated successfully!"
+        });
+
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error while editing note!" });
+    }
+});
+
+
+// getting notes api 
+app.get("/get-all-notes", authenticateToken, async (req, res) => {
+    try {
+        const { user } = req.user;
+        const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1 });
+        console.log(notes)
+
+        return res.status(200).json({
+            error: false,
+            notes,
+            message: "All the Notes fetched successfully!"
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: true, message: "Internal Server Error while fetching notes!" });
+    }
+})
+
+
+// delete note api
+app.post("/delete-note/:noteId", authenticateToken, async (req, res) => {
+
+    try {
+        const noteId = req.params.noteId;
+        const { user } = req.user;
+        const note = await Note.findOneAndDelete({ _id: noteId, userId: user._id });
+        if (!note) {
+            return res.status(404).json({ error: true, message: "Note not found or already deleted!" });
+        }
+
+        
+
+        return res.status(200).json({
+            error: false,
+            message: "Note deleted successfully!"
+        });
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error while deleting note!" });
+    }
+});
+
+//update isPinned status
+app.put("/update-pin-status/:noteId", authenticateToken, async (req, res) => {
+    try {
+        const noteId = req.params.noteId;
+        const { isPinned } = req.body;
+        const { user } = req.user;
+
+       
+
+        const note = await Note.findOne({ _id: noteId, userId: user._id });
+
+        if (!note) {
+            return res.status(404).json({ error: true, message: "Note not found!" });
+        }
+
+         if (isPinned !== undefined) note.isPinned = isPinned;
+         else {
+            note.isPinned = !note.isPinned;
+         }
+
+        await note.save();
+
+        return res.status(200).json({
+            error: false,
+            note,
+            message: "Note pinned status updated successfully!"
+        });
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error while updating pin status!" });
+    }
+});
+
+
+
+
 
 app.listen(5000, () => {
     console.log("express server started listening on port 5000");
 });
+
 
