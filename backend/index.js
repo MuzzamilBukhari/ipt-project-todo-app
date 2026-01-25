@@ -14,7 +14,7 @@ import { authenticateToken } from "./utilities.js";
 
 const app = express();
 
-// middlewares! (Ye hamesha routes se upar hone chahiye) 
+// middlewares! Ye hamesha routes se upar hone chahiye 
 app.use(express.json()); // Ye line zaroori hai req.body ke liye
 app.use(cors({ origin: "*" }));
 
@@ -25,7 +25,7 @@ mongoose.connect(config.connectionString).then(() => {
     console.error("error connecting to mongodb: ", err);
 });
 
-// --- ROUTES ---
+// ROUTES 
 
 app.get("/", (req, res) => {
     // res.send("hello from express server ")
@@ -79,7 +79,7 @@ app.post("/create-account", async (req, res) => {
             error: false,
             newUser,
             accessToken,
-            message: "Registration Successful!"
+            message: "Registration Successful Bhaai!"
         });
     } catch (error) {
 
@@ -107,26 +107,26 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ error: true, message: "Invalid email or password!" });
         }
 
-        
-            const user = { user: userInfo };
-            const accessToken = jwt.sign(
-                user,
-                process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '3600m' }
-            );
 
-            return res.status(200).json({
-                error: false,
-                email: userInfo.email,
-                accessToken,
-                message: "Login Successful!"
-            });
-         
-        }
+        const user = { user: userInfo };
+        const accessToken = jwt.sign(
+            user,
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '3600m' }
+        );
+
+        return res.status(200).json({
+            error: false,
+            email: userInfo.email,
+            accessToken,
+            message: "Login Successful!"
+        });
+
+    }
 
 
 
-    
+
 
     catch (error) {
         return res.status(500).json({ error: true, message: "Internal Server Error" });
