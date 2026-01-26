@@ -290,6 +290,25 @@ app.put("/update-pin-status/:noteId", authenticateToken, async (req, res) => {
     }
 });
 
+app.get("/get-user", authenticateToken, async (req, res) => {
+    console.log("this is get user bro !")
+    try {
+        const { user } = req.user;
+
+        if (!user) {
+            return res.status(404).json({ error: true, message: "User not found!" });
+        }
+
+        return res.status(200).json({
+            error: false,
+            user,
+            message: "User fetched successfully!"
+        });
+
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error while fetching user!" });
+    }
+})
 
 
 
@@ -299,3 +318,5 @@ app.listen(5000, () => {
 });
 
 
+
+//backend required APIs done so far needed ones
