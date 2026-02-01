@@ -9,7 +9,8 @@ import { IoMdClose } from 'react-icons/io'
 
 
 
-export default function SearchBar({value , onChange , handleSearch , onClearSearch}) {
+export default function SearchBar({value , onChange ,  onClearSearch }) {
+  
 
   return (
 
@@ -21,6 +22,9 @@ export default function SearchBar({value , onChange , handleSearch , onClearSear
      value={value}
      className='w-full text-[14.5px] bg-transparent py-[11px] outline-none '
      onChange={onChange}
+     
+
+     
     />
 
 {
@@ -34,7 +38,7 @@ value && (
 
     <FaMagnifyingGlass 
     className="cursor-pointer text-slate-400 hover:text-black"
-    onClick={handleSearch}
+    
 
 
     />

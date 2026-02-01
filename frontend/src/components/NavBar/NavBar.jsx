@@ -1,21 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProfileInfo from '../cards/ProfileInfo'
 import { useNavigate } from 'react-router-dom'
 import SearchBar from '../SearchBar/SearchBar';
 
 
 
-export default function NavBar({ userInfo}) {
+export default function NavBar({ userInfo , searchHandler} ) {
 
-
+   console.log(searchHandler)
     const [query, setQuery] = useState("")
 
-    const handleSearch = ()=>{
+    
+    useEffect(() => {
+     
+        const delayDebounceFn = setTimeout(() => {
+            
+            searchHandler(query);
+        }, 300); 
 
-    }
+        
+        return () => clearTimeout(delayDebounceFn);
+    }, [query]);
+    
 
     const onClearSearch = ()=>{
-        setQuery("")
+        setQuery("");
+       
+        
     }
 
     const navigate = useNavigate();
@@ -26,6 +37,11 @@ export default function NavBar({ userInfo}) {
 
 
 
+    }
+
+    const onChange = (e)=>{
+        setQuery(e.target.value);
+        
     }
     
     return (
@@ -38,8 +54,7 @@ export default function NavBar({ userInfo}) {
 
             {userInfo &&
             <SearchBar value={query}
-             onChange={(e)=>{setQuery(e.target.value)}}
-             handleSearch={handleSearch}
+             onChange={onChange}
              onClearSearch={onClearSearch}
              />}
 

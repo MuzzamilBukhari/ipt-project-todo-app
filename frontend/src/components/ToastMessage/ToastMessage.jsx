@@ -5,17 +5,30 @@ export default function ToastMessage({ isShown, message, type, onClose }) {
 
     console.log(onClose)
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            onClose()
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         onClose()
             
-        }, 3000)
+    //     }, 3000)
     
-      return () => {
-        clearInterval(timer)
+    //   return () => {
+    //     clearInterval(timer)
         
-      }
-    }, [onClose])
+    //   }
+    // }, [onClose])
+
+    useEffect(() => {
+    // Sirf tab timer lagao jab toast dikh raha ho
+    if (isShown) {
+        const timer = setTimeout(() => {
+            onClose();
+        }, 3000);
+
+        return () => {
+            clearTimeout(timer); // Correct cleanup
+        };
+    }
+}, [isShown]); // Ab ye sirf tab chalega jab isShown true/false hoga
     
 
 
