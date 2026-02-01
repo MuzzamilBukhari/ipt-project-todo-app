@@ -70,7 +70,7 @@ app.post("/create-account", async (req, res) => {
         await newUser.save();
 
         const accessToken = jwt.sign(
-            { user:newUser },
+            { user: newUser },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '3600m' }
         );
@@ -223,7 +223,7 @@ app.put("/edit-note/:nodeId", authenticateToken, async (req, res) => {
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
     try {
         const { user } = req.user;
-        const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1 });
+        const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1, createdAt: -1  });
         console.log(notes)
 
         return res.status(200).json({
@@ -249,7 +249,7 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
             return res.status(404).json({ error: true, message: "Note not found or already deleted!" });
         }
 
-        
+
 
         return res.status(200).json({
             error: false,
@@ -267,7 +267,7 @@ app.put("/update-pin-status/:noteId", authenticateToken, async (req, res) => {
         const { isPinned } = req.body;
         const { user } = req.user;
 
-       
+
 
         const note = await Note.findOne({ _id: noteId, userId: user._id });
 
@@ -275,10 +275,10 @@ app.put("/update-pin-status/:noteId", authenticateToken, async (req, res) => {
             return res.status(404).json({ error: true, message: "Note not found!" });
         }
 
-         if (isPinned !== undefined) note.isPinned = isPinned;
-         else {
+        if (isPinned !== undefined) note.isPinned = isPinned;
+        else {
             note.isPinned = !note.isPinned;
-         }
+        }
 
         await note.save();
 
@@ -313,7 +313,39 @@ app.get("/get-user", authenticateToken, async (req, res) => {
 })
 
 
+//searching note api
+app.get("/search-notes", authenticateToken, async (req, res) => {
+    console.log("search Nabeel")
+    try {
+        const { user } = req.user;
+        const { search } = req.query;
+        console.log(user)
 
+        console.log("search==" , search)
+
+        if (!search) {
+            return res.status(400).json({ error: true, message: "Search query is required!" });
+        }
+
+        const notes = await Note.find({
+            userId: user._id,
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { content: { $regex: search, $options: "i" } },
+                { tags: { $regex: search, $options: "i" } }
+            ]
+        });
+
+        return res.status(200).json({
+            error: false,
+            notes,
+            message: "Notes matching the search query retrieved successfully!"
+        });
+
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Internal Server Error while searching notes!" });
+    }
+});
 
 app.listen(5000, () => {
     console.log("express server started listening on port 5000");
@@ -321,4 +353,3 @@ app.listen(5000, () => {
 
 
 
-//backend required APIs done so far needed ones
