@@ -3,11 +3,12 @@ import NavBar from '../../components/NavBar/NavBar';
 import { useState } from 'react';
 import emailValidation from '../../utils/emailRegex';
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from '../../components/input/PasswordInput';
+import { API_BASE_URL } from '../../utils/contants';
 
 
-export default function SignUP() {
+export default function SignUP({showToastMsgHandler}) {
 
 
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ export default function SignUP() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
 
-
+const navigate = useNavigate();
 
 
   const signupHandler = async (e) => {
@@ -44,8 +45,40 @@ export default function SignUP() {
 
     //sign up api setting
 
+    try {
+      const response = await fetch(`${API_BASE_URL}create-account`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: name, email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok && !data.error) {
+        // Account created successfully
+        showToastMsgHandler("Welcome to our Notes App!", "add");
+        console.log("Account created successfully:", data);
+        localStorage.setItem("token", data.accessToken);
+
+        //having login here 
+        
+       
+        navigate("/dashboard");
+
+      } else {
+        // Handle errors returned by the server
+        setError(data.message || "Signup failed. Please try again.");
+      }
+
+
+  }catch (error) {
+      console.error("Error during signup:", error);
+      setError("Internal server error! Please try again later.");
+    }
 
   }
+
 
   return (
     // <div>This is Sign up component vroo!!</div>
@@ -60,14 +93,14 @@ export default function SignUP() {
 
 
             {/* name */}
-            <input type="text" placeholder='Enter your UserName!' className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
+            <input type="text" placeholder='Enter your UserName!' autoComplete="off" className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
 
               value={name}
               onChange={(e) => { setName(e.target.value) }}
             />
 
             {/* email  */}
-            <input type="text" placeholder='Enter your Email!' className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
+            <input type="text" placeholder='Enter your Email!' autoComplete="off" className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
 
               value={email}
               onChange={(e) => { setEmail(e.target.value) }}

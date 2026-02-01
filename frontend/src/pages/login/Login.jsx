@@ -1,15 +1,21 @@
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import NavBar from '../../components/NavBar/NavBar'
 import { Link } from "react-router-dom";
 
 import emailValidation from '../../utils/emailRegex';
 import PasswordInput from '../../components/input/PasswordInput';
 
-export default function Login() {
+import { useNavigate } from 'react-router-dom'
+import { API_BASE_URL } from '../../utils/contants';
+
+
+export default function Login({showToastMsgHandler}) {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+
+  const navigate = useNavigate();
 
 
   const loginHandler = async (e) => {
@@ -27,9 +33,45 @@ export default function Login() {
       return;
     }
 
-    setError("")
+    setError("");
+
+
+
 
     //login api call!
+    try {
+      const response = await fetch(`${API_BASE_URL}login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }), // Credentials bhej rahe hain
+      });
+
+      const data = await response.json();
+
+      if (response.ok && !data.error) {
+       
+         
+
+        showToastMsgHandler(`Welcome back ${data.name}!`, "add");
+        //  Token ko LocalStorage mein save karrhy
+        localStorage.setItem("token", data.accessToken);
+
+        //  User ko Dashboard par bhej rhy useNavigate hook se
+
+        navigate("/dashboard");
+
+      } else {
+        // Agar backend se koi error aaye (e.g., Wrong Password)
+        setError(data.message || "Login failed. Please try again.");
+
+      }
+    } catch (error) {
+      console.error("Network Error:", error);
+      setError("An unexpected error occurred. Please try again later.");
+
+    }
   }
 
 
@@ -37,8 +79,6 @@ export default function Login() {
 
 
   return (
-    // <div>This is login component!!</div>
-
 
     <>
       <NavBar />
@@ -49,7 +89,7 @@ export default function Login() {
             <h4 className='text-2xl mb-7'>Login</h4>
 
             {/* email here */}
-            <input type="text" placeholder='Enter your Email!' className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
+            <input type="text" placeholder='Enter your Email!' autoComplete="off" className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
 
               value={email}
               onChange={(e) => { setEmail(e.target.value) }}
@@ -64,7 +104,7 @@ export default function Login() {
             {error && <p className='text-red-500 text-[13px] pb-1 ml-[8px]'> {error}</p>}
 
             <button type="submit" className='w-full text-sm border bg-blue-600 text-white p-2 rounded  hover:bg-blue-700 transition-all duration-300 cursor-pointer '
-              onClick={loginHandler}
+
             >Login</button>
 
 
@@ -84,5 +124,6 @@ export default function Login() {
     </>
   )
 
-  
+
 }
+

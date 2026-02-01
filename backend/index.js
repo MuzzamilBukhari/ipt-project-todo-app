@@ -70,7 +70,7 @@ app.post("/create-account", async (req, res) => {
         await newUser.save();
 
         const accessToken = jwt.sign(
-            { newUser },
+            { user:newUser },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '3600m' }
         );
@@ -120,6 +120,7 @@ app.post("/login", async (req, res) => {
         return res.status(200).json({
             error: false,
             email: userInfo.email,
+            name: userInfo.username,
             accessToken,
             message: "Login Successful!"
         });
@@ -182,6 +183,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 // edit note here! bro
 app.put("/edit-note/:nodeId", authenticateToken, async (req, res) => {
     try {
+        console.log("edit notesssss")
         const noteId = req.params.nodeId;
         const { title, content, tags, isPinned } = req.body;
         const { user } = req.user;
@@ -237,7 +239,7 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
 
 
 // delete note api
-app.post("/delete-note/:noteId", authenticateToken, async (req, res) => {
+app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 
     try {
         const noteId = req.params.noteId;

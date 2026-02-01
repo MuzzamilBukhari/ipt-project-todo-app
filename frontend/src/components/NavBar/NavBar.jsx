@@ -5,7 +5,8 @@ import SearchBar from '../SearchBar/SearchBar';
 
 
 
-export default function NavBar() {
+export default function NavBar({ userInfo}) {
+
 
     const [query, setQuery] = useState("")
 
@@ -20,12 +21,13 @@ export default function NavBar() {
     const navigate = useNavigate();
 
     const onLogOut = ()=>{
-
+        localStorage.clear();
         navigate("/login")
 
 
 
     }
+    
     return (
         
         <>
@@ -33,12 +35,17 @@ export default function NavBar() {
             <h1 className='text-[27px] font-bold  text-blue-600 py-2'>
                   Notes! 
             </h1>
+
+            {userInfo &&
             <SearchBar value={query}
              onChange={(e)=>{setQuery(e.target.value)}}
              handleSearch={handleSearch}
              onClearSearch={onClearSearch}
-             />
-            <ProfileInfo onLogOut={onLogOut}/>
+             />}
+
+             {userInfo &&
+            <ProfileInfo userInfo={userInfo} onLogOut={onLogOut}/>
+            }
         
         </div>
        
