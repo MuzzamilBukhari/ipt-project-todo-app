@@ -1,47 +1,39 @@
-import React from 'react'
-import NavBar from '../../components/NavBar/NavBar';
-import { useState } from 'react';
-import emailValidation from '../../utils/emailRegex';
+import NavBar from "../../components/NavBar/NavBar";
+import { useState } from "react";
+import emailValidation from "../../utils/emailRegex";
 
 import { Link, useNavigate } from "react-router-dom";
-import PasswordInput from '../../components/input/PasswordInput';
-import { API_BASE_URL } from '../../utils/contants';
+import PasswordInput from "../../components/input/PasswordInput";
+import { API_BASE_URL } from "../../utils/contants";
 
-
-export default function SignUP({showToastMsgHandler}) {
-
-
+export default function SignUP({ showToastMsgHandler }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
 
-const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   const signupHandler = async (e) => {
-
     e.preventDefault();
-    console.log("sign up handler called")
-
-    
+    console.log("sign up handler called");
 
     if (!name) {
-      setError("Enter your name!!")
-      return
+      setError("Enter your name!!");
+      return;
     }
 
     if (!emailValidation(email)) {
-      setError("Please enter a valid email address!")
-      return
+      setError("Please enter a valid email address!");
+      return;
     }
 
     if (!password) {
-      setError("Enter your password!")
-      return
+      setError("Enter your password!");
+      return;
     }
 
-    setError("")
+    setError("");
 
     //sign up api setting
 
@@ -61,87 +53,87 @@ const navigate = useNavigate();
         console.log("Account created successfully:", data);
         localStorage.setItem("token", data.accessToken);
 
-        //having login here 
-        
-       
-        navigate("/dashboard");
+        //having login here
 
+        navigate("/dashboard");
       } else {
         // Handle errors returned by the server
         setError(data.message || "Signup failed. Please try again.");
       }
-
-
-  }catch (error) {
+    } catch (error) {
       console.error("Error during signup:", error);
       setError("Internal server error! Please try again later.");
     }
-
-  }
-
+  };
 
   return (
     // <div>This is Sign up component vroo!!</div>
     <>
       <NavBar />
 
-      <div className='flex items-center justify-center mt-10 sm:mt-16 md:mt-22 px-4'>
-
-        <div className='w-full max-w-md rounded bg-white px-5 sm:px-7 py-8 sm:py-10 drop-shadow'>
+      <div className="flex items-center justify-center mt-10 sm:mt-16 md:mt-22 px-4">
+        <div className="w-full max-w-md rounded bg-white px-5 sm:px-7 py-8 sm:py-10 drop-shadow">
           <form onSubmit={signupHandler}>
-            <h4 className='text-xl sm:text-2xl mb-5 sm:mb-7'>Sign UP</h4>
-
+            <h4 className="text-xl sm:text-2xl mb-5 sm:mb-7">Sign UP</h4>
 
             {/* name */}
-            <input type="text" placeholder='Enter your UserName!' autoComplete="off" className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
-
+            <input
+              type="text"
+              placeholder="Enter your UserName!"
+              autoComplete="off"
+              className="w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none"
               value={name}
-              onChange={(e) => { setName(e.target.value) }}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
 
             {/* email  */}
-            <input type="text" placeholder='Enter your Email!' autoComplete="off" className='w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none'
-
+            <input
+              type="text"
+              placeholder="Enter your Email!"
+              autoComplete="off"
+              className="w-full text-sm bg-transparent border-[1.5px] border-slate-200 px-5 py-3 rounded mb-4 outline-none"
               value={email}
-              onChange={(e) => { setEmail(e.target.value) }}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
-
 
             {/* PasswordInput  */}
             <PasswordInput
               value={password}
-              onChange={(e) => { setPassword(e.target.value) }}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
 
             {/* validation para ! */}
-            {error && <p className='text-red-500 text-[13px] pb-1 ml-2'> {error}</p>}
+            {error && (
+              <p className="text-red-500 text-[13px] pb-1 ml-2"> {error}</p>
+            )}
 
-            <button type="submit" className='w-full text-sm border bg-blue-600 text-white p-2 rounded  hover:bg-blue-700 transition-all duration-300 cursor-pointer '
+            <button
+              type="submit"
+              className="w-full text-sm border bg-blue-600 text-white p-2 rounded  hover:bg-blue-700 transition-all duration-300 cursor-pointer "
               onClick={signupHandler}
-            >Create Account!</button>
+            >
+              Create Account!
+            </button>
 
-            <p className='text-sm text-center mt-4 whitespace-pre-wrap'> Already have an account?{"      "}
-              <Link to="/login" className="font-medium text-primary underline  text-blue-600 my-1 ">
+            <p className="text-sm text-center mt-4 whitespace-pre-wrap">
+              {" "}
+              Already have an account?{"      "}
+              <Link
+                to="/login"
+                className="font-medium text-primary underline  text-blue-600 my-1 "
+              >
                 Login!
               </Link>
             </p>
-
-          </form >
-
+          </form>
         </div>
       </div>
-
-
-
-
     </>
-
-
-  )
+  );
 }
-
-
-
-
-
-
