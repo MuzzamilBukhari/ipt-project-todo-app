@@ -85,11 +85,11 @@ const navigate = useNavigate();
     <>
       <NavBar />
 
-      <div className='flex items-center justify-center mt-22 '>
+      <div className='flex items-center justify-center mt-10 sm:mt-16 md:mt-22 px-4'>
 
-        <div className='w-96  rounded bg-white px-7 py-10 drop-shadow'>
+        <div className='w-full max-w-md rounded bg-white px-5 sm:px-7 py-8 sm:py-10 drop-shadow'>
           <form onSubmit={signupHandler}>
-            <h4 className='text-2xl mb-7'>Sign UP</h4>
+            <h4 className='text-xl sm:text-2xl mb-5 sm:mb-7'>Sign UP</h4>
 
 
             {/* name */}
@@ -114,7 +114,7 @@ const navigate = useNavigate();
             />
 
             {/* validation para ! */}
-            {error && <p className='text-red-500 text-[13px] pb-1 ml-[8px]'> {error}</p>}
+            {error && <p className='text-red-500 text-[13px] pb-1 ml-2'> {error}</p>}
 
             <button type="submit" className='w-full text-sm border bg-blue-600 text-white p-2 rounded  hover:bg-blue-700 transition-all duration-300 cursor-pointer '
               onClick={signupHandler}

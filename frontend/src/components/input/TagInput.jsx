@@ -65,10 +65,10 @@ const TagInput = ({ tags, setTags }) => {
 
       </div>
 
-      <div className="flex items-center gap-4 ">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
         <input
           type="text"
-          className="text-sm bg-transparent border-[1.4px] border-slate-200 px-3 py-2 rounded outline-none"
+          className="text-sm bg-transparent border-[1.4px] border-slate-200 px-3 py-2 rounded outline-none flex-1"
           placeholder="Add tag"
           onChange={InputChangeHandler}
           onKeyDown={handleKeyDown}
@@ -76,7 +76,7 @@ const TagInput = ({ tags, setTags }) => {
         />
 
         <button
-          className="w-8 h-8 flex items-center justify-center rounded border-[1.4px] border-blue-600 hover:bg-blue-600 group cursor-pointer"
+          className="w-full sm:w-8 h-8 flex items-center justify-center rounded border-[1.4px] border-blue-600 hover:bg-blue-600 group cursor-pointer"
           onClick={addNewTag}
         >
           <MdAdd className="text-2xl text-blue-700 group-hover:text-white" />

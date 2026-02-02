@@ -15,12 +15,12 @@ export default function SearchBar({value , onChange ,  onClearSearch }) {
   return (
 
     // <div>SearchBar is here</div>
-    <div className='w-80 flex items-center justify-between  px-[12px] bg-slate-100 rounded-[8px]'>
+    <div className='w-full md:w-80 flex items-center justify-between px-3 bg-slate-100 rounded-lg'>
     <input
      type="text"
      placeholder='Search notes!'
      value={value}
-     className='w-full text-[14.5px] bg-transparent py-[11px] outline-none '
+     className='w-full text-sm bg-transparent py-2 outline-none '
      onChange={onChange}
      
 

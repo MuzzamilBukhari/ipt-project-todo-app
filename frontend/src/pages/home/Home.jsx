@@ -206,9 +206,9 @@ export default function Home({ showToastMsgHandler, showToastMsg, CloseToastHand
       <NavBar userInfo={userInfo} searchHandler={searchHandler} />
 
       {notes.length > 0 ? (
-        <div className='container mx-auto px-14 py-8 '>
+        <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-14 py-4 sm:py-6 md:py-8'>
 
-          <div className='grid grid-cols-3 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4'>
 
 
 
@@ -238,7 +238,7 @@ export default function Home({ showToastMsgHandler, showToastMsg, CloseToastHand
       ) : (<EmptyCard setOpenAddEditModal={setOpenAddEditModal} />)}
 
 
-      <button className='w-16 h-16 flex items-center justify-center rounded-2xl bg-blue-600 absolute right-3 bottom-3 hover:bg-blue-700  drop-shadow cursor-pointer transition-all ease-in-out duration-300 '
+      <button className='w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl bg-blue-600 fixed right-3 sm:right-4 bottom-3 sm:bottom-4 hover:bg-blue-700 drop-shadow cursor-pointer transition-all ease-in-out duration-300 z-40'
         onClick={() => {
           setOpenAddEditModal({
             isShown: true,
@@ -248,7 +248,7 @@ export default function Home({ showToastMsgHandler, showToastMsg, CloseToastHand
         }}>
 
 
-        <MdAdd className='text-[30px] text-white ' />
+        <MdAdd className='text-[28px] sm:text-[30px] text-white ' />
 
       </button>
 
@@ -265,7 +265,7 @@ export default function Home({ showToastMsgHandler, showToastMsg, CloseToastHand
         }}
 
         contentLabel=""
-        className="w-[40%] max-h-[90%] bg-white rounded mx-auto mt-15 p-5 overflow-auto "
+        className="w-[95%] sm:w-[85%] md:w-[70%] lg:w-[50%] xl:w-[40%] max-h-[90%] bg-white rounded mx-auto mt-10 sm:mt-15 p-4 sm:p-5 overflow-auto "
       >
 
         <AddEditNotes noteData={openAddEditModal.data}
@@ -287,17 +287,17 @@ export default function Home({ showToastMsgHandler, showToastMsg, CloseToastHand
             backgroundColor: "rgba(0,0,0,0.6)", // Background andhera karne ke liye
           },
         }}
-        className="w-[40%] max-h-[90%] bg-white rounded mx-auto mt-15 p-10 overflow-auto relative"
+        className="w-[95%] sm:w-[85%] md:w-[70%] lg:w-[50%] xl:w-[40%] max-h-[90%] bg-white rounded mx-auto mt-10 sm:mt-15 p-6 sm:p-8 md:p-10 overflow-auto relative"
       >
         <button
-          className="absolute top-4 right-4 text-slate-400 hover:text-red-500"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-red-500"
           onClick={() => setViewNote({ isShown: false, data: null })}
         >
-          <IoMdClose className="text-2xl hover:text-black" />
+          <IoMdClose className="text-xl sm:text-2xl hover:text-black" />
         </button>
 
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-slate-800">{viewNote.data?.title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-800">{viewNote.data?.title}</h2>
           <span className="text-xs text-slate-500">
             {viewNote.data?.createdAt ? formatDate(viewNote.data.createdAt) : ""}
           </span>

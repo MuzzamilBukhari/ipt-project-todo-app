@@ -23,13 +23,13 @@ export default function PasswordInput({ value, onChange, placeholder }) {
   {/* toggling of eye icon  */}
             {isShowPassword ? <FaRegEye
 
-              size={22}
-              className="text-blue-600 cursor-pointer"
+              size={20}
+              className="text-blue-600 cursor-pointer shrink-0"
               onClick={toggleShowPassword}
               /> : 
               <FaRegEyeSlash
-              size={22}
-              className="text-blue-600 cursor-pointer"
+              size={20}
+              className="text-blue-600 cursor-pointer shrink-0"
               onClick={toggleShowPassword}
               />
               
