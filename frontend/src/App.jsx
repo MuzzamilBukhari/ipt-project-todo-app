@@ -6,7 +6,8 @@ import Home from "./pages/home/Home";
 import Start from './pages/start/Start'
 import { useState } from "react";
 import Login from "./pages/login/Login";
-import Signup from "./pages/signup/Signup";
+import Signup from "./pages/signUP/SignUP";
+
 
 
 function App() {
