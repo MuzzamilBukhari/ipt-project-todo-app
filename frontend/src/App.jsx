@@ -2,12 +2,11 @@
 
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignUP from './pages/signUP/signUP';
-
-import Start from './pages/start/start';
 import Home from "./pages/home/Home";
+import Start from './pages/start/Start'
 import { useState } from "react";
 import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
 
 
 function App() {
@@ -48,7 +47,7 @@ function App() {
     <Routes>
      <Route path="/" element={<Start/>} />
      <Route path='/dashboard' element={<Home showToastMsgHandler={showToastMsgHandler} showToastMsg={showToastMsg} CloseToastHandler={closeToastHandler}/>} />
-     <Route path='/signUp' element={<SignUP showToastMsgHandler={showToastMsgHandler}/>} />
+     <Route path='/signUp' element={<Signup showToastMsgHandler={showToastMsgHandler}/>} />
      <Route path='/login' element={<Login showToastMsgHandler={showToastMsgHandler}/>} />
     </Routes>
     

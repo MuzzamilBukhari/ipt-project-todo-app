@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/input/PasswordInput";
 import { API_BASE_URL } from "../../utils/contants";
 
-export default function SignUP({ showToastMsgHandler }) {
+export default function Signup({ showToastMsgHandler }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
